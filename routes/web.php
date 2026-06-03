@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\StockController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use Illuminate\Support\Facades\Route;
 
@@ -12,8 +13,11 @@ Route::middleware('guest')->group(function () {
 
 Route::redirect('/login', '/');
 
-Route::get('/dashboard', [DashboardController::class, 'index'])
-    ->middleware(['auth'])
-    ->name('dashboard');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::get('/stock', [StockController::class, 'index'])->name('stock.index');
+    Route::post('/stock', [StockController::class, 'store'])->name('stock.store');
+});
 
 require __DIR__.'/auth.php';

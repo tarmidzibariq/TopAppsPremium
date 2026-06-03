@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name_service',30);
             $table->text('description_service');
             $table->string('image_service', 65);
-            $table->tinyInteger('stock_service');
+            $table->unsignedSmallInteger('stock_service');
             $table->decimal('price_service', 8, 2);
 
             $table->timestamps();
