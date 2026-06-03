@@ -29,4 +29,8 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    function stockServices()
+    {
+        return $this->hasMany(StockService::class);
+    }
 }
