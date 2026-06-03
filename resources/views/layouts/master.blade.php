@@ -11,7 +11,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title>Demo: Dashboard - Analytics | Sneat - Bootstrap Dashboard FREE</title>
+    <title>@yield('title', 'Dashboard') | Top Apps Premium</title>
 
     <meta name="description" content="" />
 
@@ -102,8 +102,7 @@
 
     <script src="{{ asset('assets-adminTemplate/js/main.js') }}"></script>
 
-    <!-- Page JS -->
-    <script src="{{ asset('assets-adminTemplate/js/dashboards-analytics.js') }}"></script>
+    @stack('page-scripts')
 
     <!-- Place this tag before closing body tag for github widget button. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
