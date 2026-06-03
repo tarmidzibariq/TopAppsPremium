@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Service;
 use App\Models\StockService;
 use Illuminate\Http\RedirectResponse;
@@ -12,34 +13,51 @@ use Illuminate\View\View;
 
 class StockController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $stocks = StockService::query()
-            ->with(['service.category', 'user'])
-            ->where('type', 'in')
-            ->latest()
-            ->paginate(15);
+        $query = StockService::with(['service.category', 'user'])
+            ->where('type', 'in');
 
-        $services = Service::with('category')
-            ->orderBy('name_service')
-            ->get();
+        // Filter kategori
+        if ($request->filled('category_id')) {
+            $query->whereHas('service', function ($q) use ($request) {
+                $q->where('category_id', $request->category_id);
+            });
+        }
 
-        $totalMasuk = (int) StockService::where('type', 'in')->sum('quantity');
+        // Filter layanan
+        if ($request->filled('service_id')) {
+            $query->where('service_id', $request->service_id);
+        }
 
-        return view('admin.stock.index', compact('stocks', 'services', 'totalMasuk'));
-    }
+        // Filter range tanggal
+        if ($request->filled('date_from')) {
+            $query->whereDate('created_at', '>=', $request->date_from);
+        }
+        if ($request->filled('date_to')) {
+            $query->whereDate('created_at', '<=', $request->date_to);
+        }
+
+        $stocks = $query->latest()->paginate(10)->withQueryString();
+        $totalMasuk = $query->sum('quantity'); // ikut filter
+
+        $services = Service::with('category')->get();
+        $categories = Category::all(); // tambahkan ini
+
+        return view('admin.stock.index', compact('stocks', 'totalMasuk', 'services', 'categories'));
+    }   
 
     public function store(Request $request)
     {
         $validated = $request->validate([
             'service_id' => ['required', 'exists:services,id'],
-            'quantity' => ['required', 'integer', 'min:1', 'max:255'],
+            'quantity' => ['required', 'integer', 'min:1', 'max:1000'],
         ], [
             'service_id.required' => 'Layanan wajib dipilih.',
             'service_id.exists' => 'Layanan tidak valid.',
             'quantity.required' => 'Jumlah stock wajib diisi.',
             'quantity.min' => 'Jumlah minimal 1.',
-            'quantity.max' => 'Jumlah maksimal 255.',
+            'quantity.max' => 'Jumlah maksimal 1000.',
         ]);
 
         DB::transaction(function () use ($validated) {

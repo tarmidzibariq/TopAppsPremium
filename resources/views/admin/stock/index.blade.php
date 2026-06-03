@@ -25,6 +25,72 @@
             </div>
         @endif
 
+        {{-- Filter Card --}}
+        <div class="card mb-4">
+            <div class="card-header d-flex align-items-center justify-content-between">
+                <h6 class="card-title mb-0"><i class="bx bx-filter-alt me-2"></i>Filter</h6>
+                @if(request()->hasAny(['category_id', 'service_id', 'date_from', 'date_to']))
+                    <a href="{{ route('stock.index') }}" class="btn btn-sm btn-label-secondary">
+                        <i class="bx bx-x me-1"></i>Reset Filter
+                    </a>
+                @endif
+            </div>
+            <div class="card-body">
+                <form method="GET" action="{{ route('stock.index') }}">
+                    <div class="row g-3">
+                        {{-- Filter Kategori --}}
+                        <div class="col-md-3">
+                            <label class="form-label">Kategori</label>
+                            <select name="category_id" class="form-select" id="filterCategory">
+                                <option value="">Semua Kategori</option>
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>
+                                        {{ $category->name_category }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        {{-- Filter Layanan --}}
+                        <div class="col-md-3">
+                            <label class="form-label">Layanan</label>
+                            <select name="service_id" class="form-select" id="filterService">
+                                <option value="">Semua Layanan</option>
+                                @foreach ($services as $service)
+                                    <option value="{{ $service->id }}"
+                                        data-category="{{ $service->category_id }}"
+                                        {{ request('service_id') == $service->id ? 'selected' : '' }}>
+                                        {{ $service->name_service }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        {{-- Date From --}}
+                        <div class="col-md-2">
+                            <label class="form-label">Dari Tanggal</label>
+                            <input type="date" name="date_from" class="form-control"
+                                value="{{ request('date_from') }}">
+                        </div>
+
+                        {{-- Date To --}}
+                        <div class="col-md-2">
+                            <label class="form-label">Sampai Tanggal</label>
+                            <input type="date" name="date_to" class="form-control"
+                                value="{{ request('date_to') }}">
+                        </div>
+
+                        {{-- Submit --}}
+                        <div class="col-md-2 d-flex align-items-end">
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="bx bx-search me-1"></i>Cari
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
         <div class="card">
             <div class="card-header d-flex align-items-center justify-content-between">
                 <h5 class="card-title mb-0">Riwayat Stock Masuk</h5>
@@ -46,7 +112,7 @@
                     <tbody>
                         @forelse ($stocks as $stock)
                             <tr>
-                                <td>{{ $stocks->firstItem() + $loop->index }}</td>
+                                <td>{{ $stock->id}}</td>
                                 <td>
                                     <span class="fw-medium">{{ $stock->service?->name_service ?? '-' }}</span>
                                 </td>
@@ -90,7 +156,7 @@
     <div class="content-backdrop fade"></div>
 </div>
 
-{{-- Modal create stock --}}
+{{-- Modal (sama seperti sebelumnya) --}}
 <div class="modal fade" id="modalCreateStock" tabindex="-1" aria-labelledby="modalCreateStockLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -116,19 +182,16 @@
                         @error('service_id')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
-                        @if ($services->isEmpty())
-                            <small class="text-danger">Belum ada layanan. Tambahkan layanan di menu Managemen terlebih dahulu.</small>
-                        @endif
                     </div>
                     <div class="mb-0">
                         <label for="quantity" class="form-label">Jumlah Stock Masuk</label>
-                        <input type="number" id="quantity" name="quantity" min="1" max="255"
+                        <input type="number" id="quantity" name="quantity" min="1" max="1000"
                             class="form-control @error('quantity') is-invalid @enderror"
                             value="{{ old('quantity', 1) }}" required />
                         @error('quantity')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
-                        <small class="text-body-secondary">Maksimal 255 unit per transaksi.</small>
+                        <small class="text-body-secondary">Maksimal 1000 unit per transaksi.</small>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -144,14 +207,34 @@
 @endsection
 
 @push('page-scripts')
-@if ($errors->any())
 <script>
+    // Dynamic filter: pilih kategori → filter dropdown layanan
+    const filterCategory = document.getElementById('filterCategory');
+    const filterService = document.getElementById('filterService');
+    const allOptions = Array.from(filterService.options);
+
+    filterCategory.addEventListener('change', function () {
+        const selectedCategory = this.value;
+        const currentService = "{{ request('service_id') }}";
+
+        // Reset service options
+        filterService.innerHTML = '<option value="">Semua Layanan</option>';
+
+        allOptions.forEach(opt => {
+            if (opt.value === '') return;
+            if (!selectedCategory || opt.dataset.category === selectedCategory) {
+                filterService.appendChild(opt.cloneNode(true));
+            }
+        });
+    });
+
+    @if ($errors->any())
     document.addEventListener('DOMContentLoaded', function () {
         var modal = document.getElementById('modalCreateStock');
         if (modal) {
             bootstrap.Modal.getOrCreateInstance(modal).show();
         }
     });
+    @endif
 </script>
-@endif
 @endpush
