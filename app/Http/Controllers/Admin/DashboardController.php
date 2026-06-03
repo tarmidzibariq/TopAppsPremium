@@ -103,9 +103,6 @@ class DashboardController extends Controller
         ));
     }
 
-    /**
-     * @return list<string>
-     */
     private function lastMonths(int $count): array
     {
         $months = [];

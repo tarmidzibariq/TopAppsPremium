@@ -64,8 +64,8 @@
         <!-- Layout container -->
         <div class="layout-page">
           <!-- Navbar -->
-
           @include('layouts.header')
+          {{-- @yield('page-heading') --}}
 
           <!-- / Navbar -->
 

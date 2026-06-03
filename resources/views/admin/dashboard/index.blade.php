@@ -2,6 +2,8 @@
 
 @section('title', 'Dashboard')
 
+{{-- @section('page-heading', 'Dashboard') --}}
+
 @section('content')
 @php
     $fmtRp = fn ($n) => 'Rp ' . number_format($n, 0, ',', '.');
@@ -85,7 +87,7 @@
         </div>
 
         {{-- Charts row 1 --}}
-        <div class="row g-6 mb-6">
+        {{-- <div class="row g-6 mb-6">
             <div class="col-lg-8">
                 <div class="card h-100">
                     <div class="card-header d-flex align-items-center justify-content-between">
@@ -107,7 +109,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
         {{-- Charts row 2 --}}
         <div class="row g-6 mb-6">
@@ -165,7 +167,7 @@
             <div class="col-md-4">
                 <div class="card h-100">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="card-title mb-0">Stock Terbanyak</h5>
+                        <h5 class="card-title mb-0">Stock Tersedia</h5>
                     </div>
                     <div class="card-body">
                         @forelse ($topServices as $service)
