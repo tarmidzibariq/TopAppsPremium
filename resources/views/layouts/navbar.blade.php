@@ -25,13 +25,13 @@
             </a>
         </li>
 
-        <li class="menu-item {{ request()->routeIs('stock.*') ? 'active open' : '' }}">
+        <li class="menu-item {{ request()->routeIs('order.*','stock.*') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <div class="text-truncate">Stock</div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item {{ request()->routeIs('stock.pesan') ? 'active' : '' }}">
-                    <a href="{{ Route::has('stock.pesan') ? route('stock.pesan') : '#' }}" class="menu-link">
+                <li class="menu-item {{ request()->routeIs('order.index') ? 'active' : '' }}">
+                    <a href="{{ Route::has('order.index') ? route('order.index') : '#' }}" class="menu-link">
                         <div class="text-truncate">Pesan</div>
                     </a>
                 </li>

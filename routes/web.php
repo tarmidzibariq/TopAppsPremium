@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\StockController;
 use App\Http\Controllers\Admin\UserController;
@@ -17,13 +18,24 @@ Route::middleware('guest')->group(function () {
 Route::redirect('/login', '/');
 
 Route::middleware(['auth'])->group(function () {
+    // dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+    // order
+    Route::get('/order', [OrderController::class, 'index'])->name('order.index');
+    Route::post('/order', [OrderController::class, 'store'])->name('order.store');
+
+    // stock
     Route::get('/stock', [StockController::class, 'index'])->name('stock.index');
     Route::post('/stock', [StockController::class, 'store'])->name('stock.store');
 
+    // service
     Route::resource('/service', ServiceController::class)->names('service');
+
+    // category
     Route::resource('/category', CategoryController::class)->names('category');
+
+    // user
     Route::resource('/users', UserController::class)->names('users');
     
 });
