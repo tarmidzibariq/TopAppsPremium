@@ -80,6 +80,10 @@
                                 <td>{{ $category->created_at->format('d M Y') }}</td>
                                 <td>
                                     <div class="d-flex gap-2">
+                                        <a href="{{ route('category.show', $category) }}"
+                                            class="btn btn-sm btn-icon btn-label-info" title="Detail">
+                                            <i class="bx bx-show"></i>
+                                        </a>
                                         <a href="{{ route('category.edit', $category) }}"
                                             class="btn btn-sm btn-icon btn-label-primary"
                                             title="Edit">
