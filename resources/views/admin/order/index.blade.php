@@ -112,7 +112,7 @@
                     <tbody>
                         @forelse ($orders as $order)
                             <tr>
-                                <td>{{ $orders->firstItem() + $loop->index }}</td>
+                                <td>{{ $order->id }}</td>
                                 <td>
                                     <span class="fw-medium">{{ $order->service?->name_service ?? '-' }}</span>
                                 </td>

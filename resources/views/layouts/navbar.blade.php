@@ -66,8 +66,8 @@
             </ul>
         </li>
 
-        <li class="menu-item {{ request()->routeIs('laporan') ? 'active' : '' }}">
-            <a href="{{ Route::has('laporan') ? route('laporan') : '#' }}" class="menu-link">
+        <li class="menu-item {{ request()->routeIs('report.*') ? 'active' : '' }}">
+            <a href="{{ Route::has('report.index') ? route('report.index') : '#' }}" class="menu-link">
                 <div class="text-truncate">Laporan</div>
             </a>
         </li>

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\StockController;
 use App\Http\Controllers\Admin\UserController;
@@ -38,6 +39,8 @@ Route::middleware(['auth'])->group(function () {
     // user
     Route::resource('/users', UserController::class)->names('users');
     
+    // report
+    Route::get('/report', [ ReportController::class, 'index'])->name('report.index');
 });
 
 require __DIR__.'/auth.php';
