@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\StockController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use Illuminate\Support\Facades\Route;
 
@@ -23,6 +24,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('/service', ServiceController::class)->names('service');
     Route::resource('/category', CategoryController::class)->names('category');
+    Route::resource('/users', UserController::class)->names('users');
+    
 });
 
 require __DIR__.'/auth.php';

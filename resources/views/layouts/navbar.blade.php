@@ -58,8 +58,8 @@
                         <div class="text-truncate">Kategori</div>
                     </a>
                 </li>
-                <li class="menu-item {{ request()->routeIs('management.pengguna') ? 'active' : '' }}">
-                    <a href="{{ Route::has('management.pengguna') ? route('management.pengguna') : '#' }}" class="menu-link">
+                <li class="menu-item {{ request()->routeIs('users.*') ? 'active' : '' }}">
+                    <a href="{{ Route::has('users.index') ? route('users.index') : '#' }}" class="menu-link">
                         <div class="text-truncate">Pengguna</div>
                     </a>
                 </li>
