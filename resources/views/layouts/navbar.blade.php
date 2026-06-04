@@ -53,8 +53,8 @@
                         <div class="text-truncate">Layanan</div>
                     </a>
                 </li>
-                <li class="menu-item {{ request()->routeIs('management.kategori') ? 'active' : '' }}">
-                    <a href="{{ Route::has('management.kategori') ? route('management.kategori') : '#' }}" class="menu-link">
+                <li class="menu-item {{ request()->routeIs('category.*') ? 'active' : '' }}">
+                    <a href="{{ Route::has('category.index') ? route('category.index') : '#' }}" class="menu-link">
                         <div class="text-truncate">Kategori</div>
                     </a>
                 </li>

@@ -22,7 +22,7 @@ class ServiceController extends Controller
             $query->where('name_service', 'like', '%' . $request->search . '%');
         }
 
-        $services   = $query->orderBy('name_service')->paginate(15)->withQueryString();
+        $services   = $query->orderBy('id', 'desc')->paginate(15)->withQueryString();
         $categories = Category::orderBy('name_category')->get();
 
         return view('admin.service.index', compact('services', 'categories'));

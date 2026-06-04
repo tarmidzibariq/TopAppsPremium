@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Layanan')
+@section('title', 'Category')
 
 @section('content')
 <div class="content-wrapper">
@@ -9,13 +9,13 @@
         {{-- Header --}}
         <div class="d-flex flex-wrap justify-content-between align-items-center mb-6 gap-3">
             <div>
-                <h4 class="mb-1">Layanan</h4>
-                <p class="text-body-secondary mb-0">Daftar semua layanan yang tersedia</p>
+                <h4 class="mb-1">Kategori</h4>
+                <p class="text-body-secondary mb-0">Daftar semua kategori yang tersedia</p>
             </div>
             <div class="d-flex align-items-center gap-3">
-                <span class="badge bg-label-primary">Total: {{ $services->total() }} layanan</span>
-                <a href="{{ route('service.create') }}" class="btn btn-primary">
-                    <i class="bx bx-plus me-1"></i> Tambah Layanan
+                <span class="badge bg-label-primary">Total: {{ $categories->total() }} kategori</span>
+                <a href="{{ route('category.create') }}" class="btn btn-primary">
+                    <i class="bx bx-plus me-1"></i> Tambah Kategori
                 </a>
             </div>
         </div>
@@ -33,29 +33,18 @@
             <div class="card-header d-flex align-items-center justify-content-between">
                 <h6 class="card-title mb-0"><i class="bx bx-filter-alt me-2"></i>Filter</h6>
                 @if(request()->hasAny(['category_id', 'search']))
-                    <a href="{{ route('service.index') }}" class="btn btn-sm btn-label-secondary">
+                    <a href="{{ route('category.index') }}" class="btn btn-sm btn-label-secondary">
                         <i class="bx bx-x me-1"></i>Reset Filter
                     </a>
                 @endif
             </div>
             <div class="card-body">
-                <form method="GET" action="{{ route('service.index') }}">
+                <form method="GET" action="{{ route('category.index') }}">
                     <div class="row g-3">
-                        <div class="col-md-4">
-                            <label class="form-label">Kategori</label>
-                            <select name="category_id" class="form-select">
-                                <option value="">Semua Kategori</option>
-                                @foreach ($categories as $category)
-                                    <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>
-                                        {{ $category->name_category }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
                         <div class="col-md-5">
-                            <label class="form-label">Cari Layanan</label>
+                            <label class="form-label">Cari Kategori</label>
                             <input type="text" name="search" class="form-control"
-                                placeholder="Nama layanan..." value="{{ request('search') }}">
+                                placeholder="Nama kategori..." value="{{ request('search') }}">
                         </div>
                         <div class="col-md-3 d-flex align-items-end">
                             <button type="submit" class="btn btn-primary w-100">
@@ -70,66 +59,28 @@
         {{-- Table --}}
         <div class="card">
             <div class="card-header d-flex align-items-center justify-content-between">
-                <h5 class="card-title mb-0">Daftar Layanan</h5>
-                <span class="badge bg-label-secondary">{{ $services->total() }} layanan</span>
+                <h5 class="card-title mb-0">Daftar Kategori</h5>
+                <span class="badge bg-label-secondary">{{ $categories->total() }} kategori</span>
             </div>
             <div class="table-responsive">
                 <table class="table table-hover mb-0">
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Gambar</th>
-                            <th>Nama Layanan</th>
-                            <th>Kategori</th>
-                            <th>Harga</th>
-                            <th>Stock</th>
+                            <th>Nama Kategori</th>
+                            <th>Tanggal dibuat</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($services as $service)
+                        @forelse ($categories as $category)
                             <tr>
-                                <td>{{ $service->id }}</td>
-                                <td>
-                                    @if ($service->image_service)
-                                        <img src="{{ asset('storage/' . $service->image_service) }}"
-                                            alt="{{ $service->name_service }}"
-                                            class="rounded"
-                                            style="width: 48px; height: 48px; object-fit: cover;">
-                                    @else
-                                        <div class="avatar avatar-sm">
-                                            <span class="avatar-initial rounded bg-label-secondary">
-                                                <i class="bx bx-image-alt"></i>
-                                            </span>
-                                        </div>
-                                    @endif
-                                </td>
-                                <td>
-                                    <span class="fw-medium">{{ $service->name_service }}</span>
-                                    @if ($service->description_service)
-                                        <br><small class="text-body-secondary text-truncate d-inline-block" style="max-width: 200px;">
-                                            {{ $service->description_service }}
-                                        </small>
-                                    @endif
-                                </td>
-                                <td>
-                                    <span class="badge bg-label-info">
-                                        {{ $service->category?->name_category ?? '-' }}
-                                    </span>
-                                </td>
-                                <td>Rp {{ number_format($service->price_service, 0, ',', '.') }}</td>
-                                <td>
-                                    @if ($service->stock_service > 10)
-                                        <span class="badge bg-label-success">{{ $service->stock_service }} unit</span>
-                                    @elseif ($service->stock_service > 0)
-                                        <span class="badge bg-label-warning">{{ $service->stock_service }} unit</span>
-                                    @else
-                                        <span class="badge bg-label-danger">Habis</span>
-                                    @endif
-                                </td>
+                                <td>{{ $category->id }}</td>
+                                <td>{{ $category->name_category }}</td>
+                                <td>{{ $category->created_at->format('d M Y') }}</td>
                                 <td>
                                     <div class="d-flex gap-2">
-                                        <a href="{{ route('service.edit', $service) }}"
+                                        <a href="{{ route('category.edit', $category) }}"
                                             class="btn btn-sm btn-icon btn-label-primary"
                                             title="Edit">
                                             <i class="bx bx-edit-alt"></i>
@@ -139,8 +90,8 @@
                                             title="Hapus"
                                             data-bs-toggle="modal"
                                             data-bs-target="#modalDelete"
-                                            data-id="{{ $service->id }}"
-                                            data-name="{{ $service->name_service }}">
+                                            data-id="{{ $category->id }}"
+                                            data-name="{{ $category->name_category }}">
                                             <i class="bx bx-trash"></i>
                                         </button>
                                     </div>
@@ -149,16 +100,16 @@
                         @empty
                             <tr>
                                 <td colspan="7" class="text-center text-body-secondary py-5">
-                                    Belum ada layanan.
+                                    Belum ada kategori.
                                 </td>
                             </tr>
                         @endforelse
                     </tbody>
                 </table>
             </div>
-            @if ($services->hasPages())
+            @if ($categories->hasPages())
                 <div class="card-footer">
-                    {{ $services->links() }}
+                    {{ $categories->links() }}
                 </div>
             @endif
         </div>
@@ -182,13 +133,13 @@
     <div class="modal-dialog modal-dialog-centered modal-sm">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Hapus Layanan</h5>
+                <h5 class="modal-title">Hapus Kategori</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body text-center py-4">
                 <i class="bx bx-trash bx-lg text-danger mb-3 d-block"></i>
-                <p class="mb-1">Yakin ingin menghapus layanan:</p>
-                <strong id="deleteServiceName"></strong>
+                <p class="mb-1">Yakin ingin menghapus kategori:</p>
+                <strong id="deleteCategoryName"></strong>
                 <p class="text-body-secondary small mt-2 mb-0">Tindakan ini tidak dapat dibatalkan.</p>
             </div>
             <div class="modal-footer">
@@ -208,8 +159,8 @@
 <script>
     document.getElementById('modalDelete').addEventListener('show.bs.modal', function (e) {
         const btn = e.relatedTarget;
-        document.getElementById('deleteServiceName').textContent = btn.dataset.name;
-        document.getElementById('formDelete').action = `/admin/service/${btn.dataset.id}`;
+        document.getElementById('deleteCategoryName').textContent = btn.dataset.name;
+        document.getElementById('formDelete').action = `/admin/category/${btn.dataset.id}`;
     });
 </script>
 @endpush

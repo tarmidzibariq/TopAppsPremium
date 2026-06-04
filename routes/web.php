@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\StockController;
@@ -21,6 +22,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/stock', [StockController::class, 'store'])->name('stock.store');
 
     Route::resource('/service', ServiceController::class)->names('service');
+    Route::resource('/category', CategoryController::class)->names('category');
 });
 
 require __DIR__.'/auth.php';
