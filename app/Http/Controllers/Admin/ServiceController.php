@@ -56,6 +56,24 @@ class ServiceController extends Controller
             ->with('success', 'Layanan berhasil ditambahkan.');
     }
 
+    public function show(Service $service)
+    {
+        $totalMasuk  = (int) $service->stockServices()->where('type', 'in')->sum('quantity');
+        $totalKeluar = (int) $service->stockServices()->where('type', 'out')->sum('quantity');
+    
+        $stockHistories = $service->stockServices()
+            ->with('user')
+            ->latest()
+            ->paginate(10);
+    
+        return view('admin.service.show', compact(
+            'service',
+            'totalMasuk',
+            'totalKeluar',
+            'stockHistories'
+        ));
+    }
+    
     public function edit(Service $service)
     {
         $categories = Category::orderBy('name_category')->get();

@@ -129,6 +129,10 @@
                                 </td>
                                 <td>
                                     <div class="d-flex gap-2">
+                                        <a href="{{ route('service.show', $service) }}"
+                                            class="btn btn-sm btn-icon btn-label-info" title="Detail">
+                                            <i class="bx bx-show"></i>
+                                        </a>
                                         <a href="{{ route('service.edit', $service) }}"
                                             class="btn btn-sm btn-icon btn-label-primary"
                                             title="Edit">
