@@ -140,6 +140,7 @@
                                             data-bs-toggle="modal"
                                             data-bs-target="#modalDelete"
                                             data-id="{{ $service->id }}"
+                                            data-action="{{ route('service.destroy', $service->id) }}"
                                             data-name="{{ $service->name_service }}">
                                             <i class="bx bx-trash"></i>
                                         </button>
@@ -206,10 +207,27 @@
 
 @push('page-scripts')
 <script>
-    document.getElementById('modalDelete').addEventListener('show.bs.modal', function (e) {
-        const btn = e.relatedTarget;
-        document.getElementById('deleteServiceName').textContent = btn.dataset.name;
-        document.getElementById('formDelete').action = `/admin/service/${btn.dataset.id}`;
+    document.addEventListener('DOMContentLoaded', function () {
+        const modalDelete = document.getElementById('modalDelete');
+        
+        if (modalDelete) {
+            modalDelete.addEventListener('show.bs.modal', function (event) {
+                // Tombol yang memicu modal muncul
+                const button = event.relatedTarget;
+                
+                // Ambil data action (URL) dan nama dari tombol
+                const actionUrl = button.getAttribute('data-action');
+                const serviceName = button.getAttribute('data-name');
+                
+                // Ambil elemen Form dan Text di dalam modal
+                const formDelete = document.getElementById('formDelete');
+                const deleteServiceName = document.getElementById('deleteServiceName');
+                
+                // Masukkan datanya ke dalam modal
+                formDelete.action = actionUrl;
+                deleteServiceName.textContent = serviceName;
+            });
+        }
     });
 </script>
 @endpush

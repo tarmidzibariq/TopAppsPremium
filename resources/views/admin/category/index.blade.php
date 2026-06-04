@@ -91,6 +91,7 @@
                                             data-bs-toggle="modal"
                                             data-bs-target="#modalDelete"
                                             data-id="{{ $category->id }}"
+                                            data-action="{{ route('category.destroy', $category->id) }}"
                                             data-name="{{ $category->name_category }}">
                                             <i class="bx bx-trash"></i>
                                         </button>
@@ -99,7 +100,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="text-center text-body-secondary py-5">
+                                <td colspan="3" class="text-center text-body-secondary py-5">
                                     Belum ada kategori.
                                 </td>
                             </tr>
@@ -157,10 +158,27 @@
 
 @push('page-scripts')
 <script>
-    document.getElementById('modalDelete').addEventListener('show.bs.modal', function (e) {
-        const btn = e.relatedTarget;
-        document.getElementById('deleteCategoryName').textContent = btn.dataset.name;
-        document.getElementById('formDelete').action = `/admin/category/${btn.dataset.id}`;
+    document.addEventListener('DOMContentLoaded', function () {
+        const modalDelete = document.getElementById('modalDelete');
+        
+        if (modalDelete) {
+            modalDelete.addEventListener('show.bs.modal', function (event) {
+                // Tombol yang memicu modal muncul
+                const button = event.relatedTarget;
+                
+                // Ambil data action (URL) dan nama dari tombol
+                const actionUrl = button.getAttribute('data-action');
+                const categoryName = button.getAttribute('data-name');
+                
+                // Ambil elemen Form dan Text di dalam modal
+                const formDelete = document.getElementById('formDelete');
+                const deleteCategoryName = document.getElementById('deleteCategoryName');
+                
+                // Masukkan datanya ke dalam modal
+                formDelete.action = actionUrl;
+                deleteCategoryName.textContent = categoryName;
+            });
+        }
     });
 </script>
 @endpush
