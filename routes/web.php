@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\StockController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use Illuminate\Support\Facades\Route;
@@ -18,6 +19,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/stock', [StockController::class, 'index'])->name('stock.index');
     Route::post('/stock', [StockController::class, 'store'])->name('stock.store');
+
+    Route::resource('/service', ServiceController::class)->names('service');
 });
 
 require __DIR__.'/auth.php';

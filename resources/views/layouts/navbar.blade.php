@@ -43,13 +43,13 @@
             </ul>
         </li>
 
-        <li class="menu-item {{ request()->routeIs('management.*') ? 'active open' : '' }}">
+        <li class="menu-item {{ request()->routeIs('service.*', 'users.*', 'category.*') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <div class="text-truncate">Managemen</div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item {{ request()->routeIs('management.layanan') ? 'active' : '' }}">
-                    <a href="{{ Route::has('management.layanan') ? route('management.layanan') : '#' }}" class="menu-link">
+                <li class="menu-item {{ request()->routeIs('service.*') ? 'active' : '' }}">
+                    <a href="{{ Route::has('service.index') ? route('service.index') : '#' }}" class="menu-link">
                         <div class="text-truncate">Layanan</div>
                     </a>
                 </li>
