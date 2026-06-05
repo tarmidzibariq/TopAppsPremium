@@ -1,87 +1,91 @@
-<aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
-    <div class="app-brand demo">
-        <a href="{{ route('dashboard') }}" class="app-brand-link">
-            <span class="app-brand-logo demo">
-                <span class="text-primary">
-                   
-                </span>
-            </span>
-            <span class="app-brand-text demo menu-text fw-bold ">Top Apps Premium</span>
-        </a>
-
-        <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
-            <i class="bx bx-chevron-left d-block d-xl-none align-middle"></i>
+<nav class="layout-navbar container-xxl navbar-detached navbar navbar-expand-xl align-items-center bg-navbar-theme fixed-top"
+    id="layout-navbar">
+    <div class="layout-menu-toggle navbar-nav align-items-xl-center me-4 me-xl-0 d-xl-none">
+        <a class="nav-item nav-link px-0 me-xl-6" href="javascript:void(0)">
+            <i class="icon-base bx bx-menu icon-md"></i>
         </a>
     </div>
 
-    <div class="menu-divider mt-0"></div>
+    <div class="navbar-nav-right d-flex align-items-center justify-content-end" id="navbar-collapse">
+        <!-- Search -->
+        {{-- <div class="navbar-nav align-items-center me-auto">
+            <div class="nav-item d-flex align-items-center">
+                <span class="w-px-22 h-px-22"><i class="icon-base bx bx-search icon-md"></i></span>
+                <input type="text" class="form-control border-0 shadow-none ps-1 ps-sm-2 d-md-block d-none"
+                    placeholder="Search..." aria-label="Search..." />
+            </div>
+        </div> --}}
+        <!-- /Search -->
 
-    <div class="menu-inner-shadow"></div>
+        <div class="navbar-nav align-items-center me-auto">
+            <div class="nav-item d-flex align-items-center gap-2">
+                <i class="bx bx-hand icon-md text-primary"></i>
+                <span class="fw-medium">Selamat Datang, <strong>{{ Auth::user()->name }}</strong></span>
+            </div>
+        </div>
 
-    <ul class="menu-inner py-1">
-        <li class="menu-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
-            <a href="{{ route('dashboard') }}" class="menu-link">
-                <div class="text-truncate">Dashboard</div>
-            </a>
-        </li>
+        {{-- @if(trim($__env->yieldContent('page-heading')))
+            <div class="navbar-nav align-items-center me-auto ">
+                <h5 class="mb-0">@yield('page-heading')</h5>
+            </div>
+        @endif --}}
 
-        <li class="menu-item {{ request()->routeIs('order.*','stock.*') ? 'active open' : '' }}">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <div class="text-truncate">Stock</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item {{ request()->routeIs('order.index') ? 'active' : '' }}">
-                    <a href="{{ Route::has('order.index') ? route('order.index') : '#' }}" class="menu-link">
-                        <div class="text-truncate">Pesan</div>
-                    </a>
-                </li>
-                <li class="menu-item {{ request()->routeIs('stock.index') ? 'active' : '' }}">
-                    <a href="{{ Route::has('stock.index') ? route('stock.index') : '#' }}" class="menu-link">
-                        <div class="text-truncate">Stock</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
+        
 
-        <li class="menu-item {{ request()->routeIs('service.*', 'users.*', 'category.*') ? 'active open' : '' }}">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <div class="text-truncate">Managemen</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item {{ request()->routeIs('service.*') ? 'active' : '' }}">
-                    <a href="{{ Route::has('service.index') ? route('service.index') : '#' }}" class="menu-link">
-                        <div class="text-truncate">Layanan</div>
-                    </a>
-                </li>
-                <li class="menu-item {{ request()->routeIs('category.*') ? 'active' : '' }}">
-                    <a href="{{ Route::has('category.index') ? route('category.index') : '#' }}" class="menu-link">
-                        <div class="text-truncate">Kategori</div>
-                    </a>
-                </li>
-                <li class="menu-item {{ request()->routeIs('users.*') ? 'active' : '' }}">
-                    <a href="{{ Route::has('users.index') ? route('users.index') : '#' }}" class="menu-link">
-                        <div class="text-truncate">Pengguna</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
+        <ul class="navbar-nav flex-row align-items-center ms-md-auto">
+           <!-- Place this tag where you want the button to render. -->
 
-        <li class="menu-item {{ request()->routeIs('report.*') ? 'active' : '' }}">
-            <a href="{{ Route::has('report.index') ? route('report.index') : '#' }}" class="menu-link">
-                <div class="text-truncate">Laporan</div>
-            </a>
-        </li>
-
-        <li class="menu-header small mt-4">
-            <span class="menu-header-text">Akun</span>
-        </li>
-        <li class="menu-item ">
-            <form method="POST" action="{{ route('logout') }}" class="w-100">
-                @csrf
-                <button type="submit" class="menu-link w-100 border-0 bg-primary text-start">
-                    <div class="text-truncate">Log Out</div>
-                </button>
-            </form>
-        </li>
-    </ul>
-</aside>
+            <!-- User -->
+            <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                <a class="nav-link dropdown-toggle hide-arrow p-0" href="javascript:void(0);" data-bs-toggle="dropdown">
+                    <div class="avatar avatar-online">
+                        <img src="{{ asset('assets-adminTemplate/img/avatars/1.png') }}" alt class="w-px-40 h-auto rounded-circle" />
+                    </div>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li>
+                        <a class="dropdown-item" href="#">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0 me-3">
+                                    <div class="avatar avatar-online">
+                                        <img src="{{ asset('assets-adminTemplate/img/avatars/1.png') }}" alt
+                                            class="w-px-40 h-auto rounded-circle" />
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-0">{{ Auth::user()->name }}</h6>
+                                    <small class="text-body-secondary">Admin</small>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <div class="dropdown-divider my-1"></div>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="{{ route('profile.edit') }}">
+                            <i class="icon-base bx bx-user icon-md me-3"></i><span>Profile Saya</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="{{ route('profile.password') }}">
+                            <i class="icon-base bx bx-lock icon-md me-3"></i><span>Ubah Password</span>
+                        </a>
+                    </li>
+                    <li>
+                        <div class="dropdown-divider my-1"></div>
+                    </li>
+                    <li>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit" class="dropdown-item w-100 border-0 bg-transparent text-start">
+                                <i class="icon-base bx bx-power-off icon-md me-3"></i><span>Log Out</span>
+                            </button>
+                        </form>
+                    </li>
+                </ul>
+            </li>
+            <!--/ User -->
+        </ul>
+    </div>
+</nav>

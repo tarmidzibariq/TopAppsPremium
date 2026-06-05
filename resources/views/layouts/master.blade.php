@@ -58,13 +58,13 @@
       <div class="layout-container">
         <!-- Menu -->
 
-        @include('layouts.navbar')
+        @include('layouts.sidebar')
         <!-- / Menu -->
 
         <!-- Layout container -->
         <div class="layout-page">
           <!-- Navbar -->
-          @include('layouts.header')
+          @include('layouts.navbar')
           {{-- @yield('page-heading') --}}
 
           <!-- / Navbar -->

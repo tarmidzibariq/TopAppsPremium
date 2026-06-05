@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\StockController;
@@ -19,6 +20,12 @@ Route::middleware('guest')->group(function () {
 Route::redirect('/login', '/');
 
 Route::middleware(['auth'])->group(function () {
+    // profile
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::get('/profile/password', [ProfileController::class, 'password'])->name('profile.password');
+    Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.updatePassword');
+    
     // dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
