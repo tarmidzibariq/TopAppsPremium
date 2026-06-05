@@ -25,22 +25,10 @@
             </a>
         </li>
 
-        <li class="menu-item {{ request()->routeIs('order.*','stock.*') ? 'active open' : '' }}">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
+        <li class="menu-item {{ request()->routeIs('stock.*') ? 'active open' : '' }}">
+            <a href="{{ Route::has('stock.index') ? route('stock.index') : '#' }}" class="menu-link ">
                 <div class="text-truncate">Stock</div>
             </a>
-            <ul class="menu-sub">
-                <li class="menu-item {{ request()->routeIs('order.index') ? 'active' : '' }}">
-                    <a href="{{ Route::has('order.index') ? route('order.index') : '#' }}" class="menu-link">
-                        <div class="text-truncate">Pesan</div>
-                    </a>
-                </li>
-                <li class="menu-item {{ request()->routeIs('stock.index') ? 'active' : '' }}">
-                    <a href="{{ Route::has('stock.index') ? route('stock.index') : '#' }}" class="menu-link">
-                        <div class="text-truncate">Stock</div>
-                    </a>
-                </li>
-            </ul>
         </li>
 
         <li class="menu-item {{ request()->routeIs('service.*', 'users.*', 'category.*') ? 'active open' : '' }}">

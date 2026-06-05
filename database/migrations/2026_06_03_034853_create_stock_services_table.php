@@ -16,6 +16,8 @@ return new class extends Migration
             $table->foreignId('service_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->unsignedSmallInteger('quantity');
+            $table->unsignedSmallInteger('stock_before');
+            $table->unsignedSmallInteger('stock_after');
             $table->enum('type', ['in', 'out']);
             $table->timestamps();
         });

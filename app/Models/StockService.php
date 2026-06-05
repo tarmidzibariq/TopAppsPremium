@@ -10,7 +10,9 @@ class StockService extends Model
         'service_id',
         'user_id',
         'quantity',
-        'type'
+        'type',
+        'stock_before',
+        'stock_after',
     ];
 
     public function service()

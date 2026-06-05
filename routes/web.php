@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\OrderController;
+// use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\ServiceController;
@@ -29,9 +29,9 @@ Route::middleware(['auth'])->group(function () {
     // dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    // order
-    Route::get('/order', [OrderController::class, 'index'])->name('order.index');
-    Route::post('/order', [OrderController::class, 'store'])->name('order.store');
+    // // order
+    // Route::get('/order', [OrderController::class, 'index'])->name('order.index');
+    // Route::post('/order', [OrderController::class, 'store'])->name('order.store');
 
     // stock
     Route::get('/stock', [StockController::class, 'index'])->name('stock.index');
