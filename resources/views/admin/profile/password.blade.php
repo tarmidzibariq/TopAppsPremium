@@ -52,7 +52,7 @@
                                 <div class="col-sm-12">
                                     <label class="text-body-secondary small d-block mb-1">Password Lama <span
                                             class="text-danger">*</span></label>
-                                    <div class="input-group input-group-merge">
+                                    <div class="input-group">
                                         <input type="password"
                                             class="form-control @error('password_old') is-invalid @enderror"
                                             id="password_old" name="password_old" placeholder="Masukkan password lama"
@@ -71,7 +71,7 @@
                                 <div class="col-sm-12">
                                     <label class="text-body-secondary small d-block mb-1">Password Baru <span
                                             class="text-danger">*</span></label>
-                                    <div class="input-group input-group-merge">
+                                    <div class="input-group">
                                         <input type="password"
                                             class="form-control @error('password_new') is-invalid @enderror"
                                             id="password_new" name="password_new" placeholder="Masukkan password baru"
@@ -91,7 +91,7 @@
                                 <div class="col-sm-12">
                                     <label class="text-body-secondary small d-block mb-1">Konfirmasi Password <span
                                             class="text-danger">*</span></label>
-                                    <div class="input-group input-group-merge">
+                                    <div class="input-group">
                                         <input type="password"
                                             class="form-control @error('password_new_confirmation') is-invalid @enderror"
                                             id="password_new_confirmation" name="password_new_confirmation"

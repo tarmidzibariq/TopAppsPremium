@@ -54,7 +54,7 @@
                                     <input type="password" id="password" name="password"
                                         class="form-control @error('password') is-invalid @enderror"
                                         placeholder="Minimal 8 karakter" required>
-                                    <button class="btn btn-icon btn-label-secondary" type="button" id="togglePassword">
+                                    <button class="input-group-text cursor-pointer toggle-password" type="button" id="togglePassword">
                                         <i class="bx bx-hide" id="togglePasswordIcon"></i>
                                     </button>
                                     @error('password')
@@ -70,9 +70,9 @@
                                     <input type="password" id="password_confirmation" name="password_confirmation"
                                         class="form-control"
                                         placeholder="Ulangi password" required>
-                                    <button class="btn btn-icon btn-label-secondary" type="button" id="togglePasswordConfirm">
+                                    <span class="input-group-text cursor-pointer toggle-password" type="button" id="togglePasswordConfirm">
                                         <i class="bx bx-hide" id="togglePasswordConfirmIcon"></i>
-                                    </button>
+                                    </span>
                                 </div>
                             </div>
 
