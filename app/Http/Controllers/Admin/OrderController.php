@@ -47,6 +47,15 @@ class OrderController extends Controller
 
     public function store(Request $request)
     {
+        // jika quantity melebihi stok layanan yang tersedia, tampilkan error
+        $service = Service::find($request->service_id);
+        if($request->quantity > $service->stock_service) {
+            return redirect()->back()
+                ->withErrors(['quantity' => 'Jumlah melebihi stok layanan yang tersedia.'])
+                ->withInput();  
+        }
+
+        // validasi input
         $validated = $request->validate([
             'service_id' => ['required', 'exists:services,id'],
             'quantity' => ['required', 'integer', 'min:1', 'max:1000'],
