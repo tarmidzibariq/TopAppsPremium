@@ -7,52 +7,163 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
+# TopAppsPremium (Laravel)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Project Laravel ini adalah aplikasi internal (admin) untuk mengelola **kategori**, **service/layanan**, **stok masuk/keluar**, serta menampilkan **dashboard & laporan**.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Prasyarat
+- **PHP 8.3+**
+- **Composer**
+- **Node.js** & **npm** (untuk Vite / frontend assets)
+- Database yang didukung Laravel (umumnya MySQL/PostgreSQL). Contoh di bawah menggunakan **MySQL**.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Cara Install & Setup
+1. Clone project, lalu masuk ke folder project.
 
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
-
+2. Install dependensi PHP:
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+composer install
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+3. Siapkan file `.env`:
+```bash
+cp .env.example .env
+```
+Lalu edit konfigurasi database di `.env`, contoh untuk MySQL:
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=topappspremium
+DB_USERNAME=root
+DB_PASSWORD=
+```
 
-## Contributing
+4. Generate APP_KEY:
+```bash
+php artisan key:generate
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+5. Jalankan migrate database (opsional seed jika tersedia):
+```bash
+php artisan migrate --force
+```
+> Jika ingin mengisi data awal (seeders), coba:
+```bash
+php artisan migrate --force --seed
+```
 
-## Code of Conduct
+6. Buat symlink untuk akses storage upload (mis. image service):
+```bash
+php artisan storage:link
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+7. Install dependensi frontend:
+```bash
+npm install
+```
 
-## Security Vulnerabilities
+## Cara Menjalankan Proyek
+- Jalankan server Laravel:
+```bash
+php artisan serve
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- Jalankan Vite (untuk assets/front-end):
+```bash
+npm run dev
+```
 
-## License
+Setelah itu buka:
+- **Login**: `/` (route login diarahkan ke AuthenticatedSessionController)
+- **Dashboard**: `/dashboard`
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+> Pastikan server sudah berjalan dari port yang ditampilkan oleh `php artisan serve`.
+
+## Fitur yang tersedia
+Berdasarkan route & controller yang ada, aplikasi menyediakan modul berikut:
+
+### 1) Autentikasi & Profile
+- Login/logout (halaman login ada di `/`).
+- **Profile**
+  - Edit data profil: `/profile` (GET/PUT)
+  - Update password: `/profile/password` (GET/PUT)
+
+### 2) Dashboard (Analitik)
+- Halaman dashboard: `/dashboard`
+- Menampilkan:
+  - Total stok per kategori (`Category` + `Service` + jumlah stok)
+  - Total stok masuk/keluar (berdasarkan `type` pada `StockService`)
+  - Rekap revenue bulanan (6 bulan terakhir) untuk chart
+  - Deret data:
+    - `revenueSeries` (nilai revenue dari `quantity * price_service`)
+    - `pesanSeries` (jumlah keluar)
+    - `masukSeries` (jumlah masuk)
+  - Daftar pergerakan stok terbaru (limit 8)
+  - **Low stock services** (stok `<= 5`, limit 6)
+  - **Top services** (stok tertinggi, limit 5)
+  - Statistik total: jumlah kategori, service, user, dan total transaksi
+
+### 3) Category (CRUD)
+- Routes berbasis resource: `/category`
+- Fitur:
+  - List kategori (pagination + pencarian `search`)
+  - Buat kategori
+  - Edit kategori
+  - Hapus kategori
+  - Detail kategori: menampilkan services yang terkait
+
+### 4) Service/Layanan (CRUD + Upload Image)
+- Routes berbasis resource: `/service`
+- Fitur:
+  - List service (pagination + filter `category_id` + pencarian `name_service`)
+  - Buat/Edit service
+    - Upload gambar `image_service` (jpg/jpeg/png/webp, max 2MB)
+  - Detail service (`show`):
+    - Total **masuk** (`type=in`) dan **keluar** (`type=out`)
+    - Histori transaksi stok terkait service (paginate 10, termasuk relasi user)
+  - Hapus service (jika image ada, akan dihapus dari storage)
+
+### 5) Stock (Pencatatan Stok Masuk/Keluar)
+- List & filter: `/stock`
+- Tambah transaksi stok: `/stock` (POST)
+- Fitur:
+  - Filter berdasarkan:
+    - `type` (`in` atau `out`)
+    - `category_id`
+    - `service_id`
+    - rentang tanggal (`date_from`, `date_to`)
+  - Menampilkan total:
+    - total masuk (`type=in`)
+    - total keluar (`type=out`)
+  - Saat transaksi `out`, aplikasi **memvalidasi stok tidak boleh melebihi stok tersedia**.
+  - Update stok dilakukan dalam transaksi database (`DB::transaction` + `lockForUpdate`).
+
+### 6) Users (CRUD Admin)
+- Routes berbasis resource: `/users`
+- Fitur:
+  - List users (pagination + pencarian berdasarkan `name` atau `email`)
+  - Buat user (validasi password minimal 8 + confirmed)
+  - Edit user (password opsional)
+  - Hapus user (blokir penghapusan akun sendiri)
+
+### 7) Report (Laporan & Grafik)
+- Route: `/report`
+- Fitur:
+  - Filter `month` dan `year` (default mengikuti tanggal sekarang)
+  - Statistik kartu:
+    - total masuk per bulan
+    - total keluar per bulan
+    - total transaksi per bulan
+  - Grafik 12 bulan untuk tahun tertentu:
+    - total masuk per bulan
+    - total keluar per bulan
+  - Top 5 layanan dengan stok masuk (berdasarkan quantity) untuk bulan terpilih
+  - Top 5 layanan dengan stok keluar (berdasarkan quantity) untuk bulan terpilih
+  - Daftar **stok kritis** (service `stock_service <= 5`)
+
+## Catatan Teknis
+- Image `image_service` tersimpan di disk `public` dan perlu `php artisan storage:link` agar bisa diakses via URL publik.
+- Transaksi stok menggunakan tabel `stock_services` dengan kolom:
+  - `type` (in/out), `quantity`, `stock_before`, `stock_after`, serta relasi ke `service` dan `user`.
+
