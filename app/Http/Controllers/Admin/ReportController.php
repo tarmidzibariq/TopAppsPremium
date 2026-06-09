@@ -62,11 +62,16 @@ class ReportController extends Controller
             ->where('stock_service', '<=', 5)
             ->orderBy('stock_service')->get();
 
+        // Laporan pesanan 
+        $laporanPesanan = StockService::with('service.category')
+            ->whereYear('created_at', $year)->whereMonth('created_at', $month)
+            ->orderByDesc('created_at')->get();
+
         return view('admin.report.index', compact(
             'month', 'year', 'years',
             'totalStockMasuk', 'totalStockKeluar', 'totalTransaksi',
             'chartMonths', 'chartIn', 'chartOut',
-            'topMasuk', 'topKeluar', 'kritisServices'
+            'topMasuk', 'topKeluar', 'kritisServices', 'laporanPesanan'
         ));
     }
 }

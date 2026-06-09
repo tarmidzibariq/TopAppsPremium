@@ -167,11 +167,13 @@
                     </tbody>
                 </table>
             </div>
-            @if ($services->hasPages())
+            {{ $services->links('pagination::bootstrap-5') }}
+
+            {{-- @if ($services->hasPages())
                 <div class="card-footer">
                     {{ $services->links() }}
                 </div>
-            @endif
+            @endif --}}
         </div>
 
     </div>

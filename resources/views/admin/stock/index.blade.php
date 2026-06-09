@@ -161,11 +161,13 @@
                     </tbody>
                 </table>
             </div>
-            @if ($stocks->hasPages())
+            {{ $stocks->links('pagination::bootstrap-5') }}
+
+            {{-- @if ($stocks->hasPages())
                 <div class="card-footer">
                     {{ $stocks->links() }}
                 </div>
-            @endif
+            @endif --}}
         </div>
 
     </div>

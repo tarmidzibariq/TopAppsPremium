@@ -261,7 +261,81 @@
             </div>
 
         </div>
+        {{-- Laporan Pesanan --}}
+        <div class="card">
+            <div class="card-header d-flex align-items-center justify-content-between">
+                <h5 class="card-title mb-0">Log Mutasi Stock</h5>
+                
+                <span class="badge bg-label-secondary"> {{ \Carbon\Carbon::create($year, $month, 1)->translatedFormat('F Y') }}</span>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Layanan</th>
+                            <th>Kategori</th>
+                            <th>Mutasi</th>
+                            <th>Stok Awal</th>
+                            <th>Stok Akhir</th>
+                            <th>Oleh</th>
+                            <th>Tanggal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($laporanPesanan as $stock)
+                            <tr>
+                                <td>{{ $stock->id }}</td>
+                                <td>
+                                    <span class="fw-medium">{{ $stock->service?->name_service ?? '-' }}</span>
+                                </td>
+                                <td>
+                                    <span class="badge bg-label-info">
+                                        {{ $stock->service?->category?->name_category ?? '-' }}
+                                    </span>
+                                </td>
+                                <td>
+                                    @if ($stock->type === 'in')
+                                        <span class="text-success fw-semibold">
+                                            +{{ number_format($stock->quantity) }}
+                                        </span>
+                                        <span class="badge bg-label-success ms-1">Masuk</span>
+                                    @else
+                                        <span class="text-danger fw-semibold">
+                                            -{{ number_format($stock->quantity) }}
+                                        </span>
+                                        <span class="badge bg-label-danger ms-1">Keluar</span>
+                                    @endif
+                                </td>
+                                <td class="text-body-secondary">
+                                    {{ number_format($stock->stock_before ?? 0) }} unit
+                                </td>
+                                <td>
+                                    <span class="fw-medium">{{ number_format($stock->stock_after ?? 0) }} unit</span>
+                                </td>
+                                <td>{{ $stock->user?->name ?? '-' }}</td>
+                                <td>
+                                    <small>{{ $stock->created_at->translatedFormat('d M Y H:i') }}</small>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="8" class="text-center text-body-secondary py-5">
+                                    Belum ada transaksi.
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+            {{-- {{ $laporanPesanan->links('pagination::bootstrap-5') }} --}}
 
+            {{-- @if ($stocks->hasPages())
+                <div class="card-footer">
+                    {{ $stocks->links() }}
+                </div>
+            @endif --}}
+        </div>
     </div>
 
     <footer class="content-footer footer bg-footer-theme">
