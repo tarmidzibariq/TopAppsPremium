@@ -12,6 +12,17 @@
                 <h4 class="mb-1">Laporan</h4>
                 <p class="text-body-secondary mb-0">Ringkasan data transaksi dan stock layanan</p>
             </div>
+            <div class="d-flex gap-2">
+                <a href="{{ route('report.print', ['month' => $month, 'year' => $year]) }}"
+                target="_blank"
+                class="btn btn-label-primary">
+                    <i class="bx bx-printer me-1"></i>Cetak PDF
+                </a>
+                <a href="{{ route('report.export', ['month' => $month, 'year' => $year]) }}"
+                class="btn btn-label-success">
+                    <i class="bx bx-spreadsheet me-1"></i>Export Excel
+                </a>
+            </div>
         </div>
 
         {{-- Filter --}}
@@ -77,7 +88,7 @@
                         <div>
                             <small class="text-body-secondary d-block">Stock Masuk</small>
                             <h4 class="mb-0 text-success">{{ number_format($totalStockMasuk) }}</h4>
-                            <small class="text-body-secondary">unit bulan ini</small>
+                            <small class="text-body-secondary">unit {{ \Carbon\Carbon::create($year, $month, 1)->translatedFormat('F Y') }}</small>
                         </div>
                     </div>
                 </div>
@@ -93,7 +104,7 @@
                         <div>
                             <small class="text-body-secondary d-block">Stock Keluar</small>
                             <h4 class="mb-0 text-danger">{{ number_format($totalStockKeluar) }}</h4>
-                            <small class="text-body-secondary">unit bulan ini</small>
+                            <small class="text-body-secondary">unit {{ \Carbon\Carbon::create($year, $month, 1)->translatedFormat('F Y') }}</small>
                         </div>
                     </div>
                 </div>
@@ -109,7 +120,7 @@
                         <div>
                             <small class="text-body-secondary d-block">Total Transaksi</small>
                             <h4 class="mb-0 text-primary">{{ number_format($totalTransaksi) }}</h4>
-                            <small class="text-body-secondary">bulan ini</small>
+                            <small class="text-body-secondary">unit {{ \Carbon\Carbon::create($year, $month, 1)->translatedFormat('F Y') }}</small>
                         </div>
                     </div>
                 </div>
@@ -125,7 +136,7 @@
                         <div>
                             <small class="text-body-secondary d-block">Stok Kritis</small>
                             <h4 class="mb-0 text-warning">{{ $kritisServices->count() }}</h4>
-                            <small class="text-body-secondary">layanan ≤ 5 unit</small>
+                            <small class="text-body-secondary">layanan ≤ 5 unit {{ \Carbon\Carbon::create($year, $month, 1)->translatedFormat('F Y') }} </small>
                         </div>
                     </div>
                 </div>
@@ -223,7 +234,7 @@
                         <h6 class="card-title mb-0">
                             <i class="bx bx-error-circle text-warning me-1"></i>Stok Kritis
                         </h6>
-                        <span class="badge bg-label-warning">≤ 5 unit</span>
+                        <span class="badge bg-label-warning">≤ 5 unit  {{ \Carbon\Carbon::create($year, $month, 1)->translatedFormat('F Y') }}</span>
                     </div>
                     <div class="card-body p-0">
                         <div class="table-responsive">
@@ -232,16 +243,16 @@
                                     @forelse ($kritisServices as $kritis)
                                         <tr>
                                             <td class="ps-3">
-                                                <div class="fw-medium small">{{ $kritis->name_service }}</div>
+                                                <div class="fw-medium small">{{ $kritis->service?->name_service ?? '-' }}</div>
                                                 <div class="text-body-secondary" style="font-size:11px;">
-                                                    {{ $kritis->category?->name_category ?? '-' }}
+                                                    {{ $kritis->service?->category?->name_category ?? '-' }}
                                                 </div>
                                             </td>
                                             <td class="pe-3 text-end">
-                                                @if ($kritis->stock_service == 0)
+                                                @if ($kritis->stock_after == 0)
                                                     <span class="badge bg-label-danger">Habis</span>
                                                 @else
-                                                    <span class="badge bg-label-warning">{{ $kritis->stock_service }} unit</span>
+                                                    <span class="badge bg-label-warning">{{ $kritis->stock_after }} unit</span>
                                                 @endif
                                             </td>
                                         </tr>
