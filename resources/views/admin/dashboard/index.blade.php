@@ -188,7 +188,7 @@
                 <div class="card h-100 border border-warning">
                     <div class="card-header">
                         <h5 class="card-title mb-0 text-warning">
-                            <i class="bx bx-error-circle me-1"></i>Stock Menipis
+                            <i class="bx bx-error-circle me-1"></i>Stock Menipis ≤ 5
                         </h5>
                     </div>
                     <div class="card-body">
@@ -198,7 +198,11 @@
                                     <h6 class="mb-0 text-truncate" style="max-width: 180px;">{{ $service->name_service }}</h6>
                                     <small class="text-body-secondary">{{ $service->category?->name_category ?? '-' }}</small>
                                 </div>
-                                <span class="badge bg-warning">{{ $service->stock_service }} unit</span>
+                                @if ($service->stock_service == 0)
+                                    <span class="badge bg-danger">Habis</span>
+                                @else
+                                    <span class="badge bg-warning">{{ $service->stock_service }} unit</span>
+                                @endif 
                             </div>
                         @empty
                             <p class="text-body-secondary text-center mb-0 py-3">Semua stock aman (&gt; 5 unit).</p>
